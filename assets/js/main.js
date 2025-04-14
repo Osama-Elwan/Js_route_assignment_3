@@ -126,4 +126,11 @@ function clearInputs() {
     siteUrlInput.value = ""
     siteNameInput.classList.remove("is-valid")
     siteUrlInput.classList.remove("is-valid")
+    removeSiteUrlInput()
+}
+
+function removeSiteUrlInput() {
+    inputContent.classList.remove("d-none")
+        nextButton.classList.add("d-none")
+        submitButton.classList.remove("d-none")
 }
