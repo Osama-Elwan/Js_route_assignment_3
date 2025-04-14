@@ -130,7 +130,7 @@ function clearInputs() {
 }
 
 function removeSiteUrlInput() {
-    inputContent.classList.remove("d-none")
-        nextButton.classList.add("d-none")
-        submitButton.classList.remove("d-none")
+    inputContent.classList.add("d-none")
+        nextButton.classList.remove("d-none")
+        submitButton.classList.add("d-none")
 }
