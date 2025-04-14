@@ -50,45 +50,53 @@ function addSiteUrlInput() {
 }
 
 function addSite() {
-    if(validate(urlRegex,siteUrlInput) ) {
-        var siteInfo = {
-            name: siteNameInput.value,
-            URL: siteUrlInput.value
-        }
-        if(siteList.length !== 0) {
-            for (var i = 0; i < siteList.length; i++) {
-                if(!siteList[i].URL.toLowerCase().includes(siteUrlInput.value.toLowerCase()) && !siteList[i].name.toLowerCase().includes(siteNameInput.value.toLowerCase())) {
-                    siteList.push(siteInfo)
-                    localStorage.setItem("sites",JSON.stringify(siteList))
-                    displaySite(siteList.length - 1)
-                    Swal.fire({
-                        title: "Site added successfully!",
-                        icon: "success",
-                        draggable: true
-                    });
-                    clearInputs()
-                }
-        }
-        }else {
-            siteList.push(siteInfo)
-            localStorage.setItem("sites",JSON.stringify(siteList))
+    if(validate(nameRegex,siteNameInput)) {
 
-            displaySite(siteList.length - 1)
+        if(validate(urlRegex,siteUrlInput) ) {
+            var siteInfo = {
+                name: siteNameInput.value,
+                URL: siteUrlInput.value
+            }
+            let isDuplicate = siteList.some(site => 
+                site.URL.toLowerCase() === siteUrlInput.value.toLowerCase() || 
+                site.name.toLowerCase() === siteNameInput.value.toLowerCase()
+            );
+            
+            if (isDuplicate) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Invalid request",
+                    text: "Site Name or Site URL is repeated please try again",
+                    footer: '<strong>Please try again</strong>'
+                });
+            } else {
+                siteList.push(siteInfo);
+                localStorage.setItem("sites", JSON.stringify(siteList));
+                displaySite(siteList.length - 1);
+                Swal.fire({
+                    title: "Site added successfully!",
+                    icon: "success",
+                    draggable: true
+                });
+                clearInputs();
+            }
+            
+            
+            
+        }else {
             Swal.fire({
-                title: "Site added successfully!",
-                icon: "success",
-                draggable: true
+                icon: "error",
+                title: "Invalid Site URL",
+                text: "Site URL must start with http:// or https:// and contain a valid domain name (e.g. https://test.com).",
+                footer: '<strong>Please enter a correct URL format</strong>'
             });
-            clearInputs()
         }
-        
-        
     }else {
         Swal.fire({
             icon: "error",
-            title: "Invalid Site URL",
-            text: "Site URL must start with http:// or https:// and contain a valid domain name (e.g. https://test.com).",
-            footer: '<strong>Please enter a correct URL format</strong>'
+            title: "Invalid Site Name",
+            text: "Site name must start with a capital letter and be at least 4 characters long (letters or numbers).",
+            footer: ' <strong>Please try again</strong>'
         });
     }
     
